@@ -19,8 +19,9 @@ class NetworkDataExtract():
         
     def cv_to_json_converter(self, file_path):
         try:
-            # CSV রিড করা এবং ইনডেক্স রিসেট করা
+            # CSV রিড করা এবং ইনডেক্স রিসেট করা  >>>>>>>>>>>>> 'Extract' part of ETL.
             data = pd.read_csv(file_path)
+            #                                   >>>>>>>>>>>>> 'Transform' part of ETL.
             data.reset_index(drop=True, inplace=True)
             
             # সরাসরি লিস্ট অফ ডিকশনারিতে রূপান্তর
@@ -28,7 +29,7 @@ class NetworkDataExtract():
             return records
         except Exception as e:
             raise NetworkSecurityException(e, sys)
-
+    #                                           >>>>>>>>>>>>>>> 'Load' part of ETL. 
     def insert_data_to_mongoDB(self, records, database_name, collection_name):
         try:
             # ১. মঙ্গোডিবি ক্লায়েন্ট তৈরি (SSL সহ)
