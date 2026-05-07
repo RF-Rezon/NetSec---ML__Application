@@ -8,9 +8,10 @@ load_dotenv()
 
 MONGO_DB_ID = os.getenv("MONGO_DB_ID")
 MONGO_DB_PASS = os.getenv("MONGO_DB_PASS")
+MONGO_DB_URL = os.getenv("MONGO_DB_URL")
 
 
-uri = f"mongodb+srv://{MONGO_DB_ID}:{MONGO_DB_PASS}@primarycluster.iog7cz5.mongodb.net/?appName=PrimaryCluster"
+uri = MONGO_DB_URL
 
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
