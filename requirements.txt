@@ -1,15 +1,15 @@
 python-dotenv
 pandas
 numpy
-seaborn
-matplotlib
-scikit-learn
-catboost
-xgboost
-flask
-dill
-gunicorn
-pymongo[srv]==3.12
+pymongo
 certifi
+pymongo[srv]
+scikit-learn
+mlflow
+pyaml
+dagshub
+fastapi
+uvicorn
+python-multipart
 
 # -e .
