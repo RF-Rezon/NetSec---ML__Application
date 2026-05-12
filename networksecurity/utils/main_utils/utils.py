@@ -3,7 +3,7 @@ import yaml
 import numpy as np
 import pickle
 from sklearn.metrics import r2_score
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV
 from networksecurity.logging.logger import logging
 from networksecurity.exception.exception import NetworkSecurityException
 
@@ -82,14 +82,12 @@ def evaluate_models(X_train, y_train, X_test, y_test, models, param):
 
             para = param[name]
 
-            gs = RandomizedSearchCV(
+            gs = GridSearchCV(
                 estimator=model,
-                param_distributions=para, 
-                n_iter=10,                
+                param_grid=para,               
                 cv=3,
                 verbose=1,                
-                n_jobs=-1,
-                random_state=42
+                n_jobs=-1
                 )               
 
             gs.fit(X_train, y_train)

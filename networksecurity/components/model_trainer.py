@@ -22,7 +22,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from xgboost import XGBClassifier
 from catboost import CatBoostClassifier
 from sklearn.svm import SVC
-
+import mlflow
 
 class ModelTrainer:
     def __init__(self,model_trainer_config:ModelTrainerConfig,data_transformation_artifact:DataTransformationArtifact):
@@ -31,6 +31,26 @@ class ModelTrainer:
             self.data_transformation_artifact=data_transformation_artifact
         except Exception as e:
             raise NetworkSecurityException(e,sys)
+        
+
+    def track_mlflow(self, best_model, train_metric, test_metric):
+        # একটি সিঙ্গেল রানের মধ্যে সবকিছু লগ করা
+        with mlflow.start_run():
+            # লগিং প্যারামিটার (ঐচ্ছিক কিন্তু জরুরি)
+            mlflow.log_param("model_name", type(best_model).__name__)       # এটি মডেলের নাম সেভ করে (যেমন: RandomForestClassifier)। যাতে পরে ড্যাশবোর্ডে দেখে বোঝা যায় কোন মডেলটি এই রেজাল্ট দিয়েছে।
+            
+            # ট্রেইন মেট্রিক্স লগ করা
+            mlflow.log_metric("train_f1_score", train_metric.f1_score)
+            mlflow.log_metric("train_precision", train_metric.precision_score)
+            mlflow.log_metric("train_recall", train_metric.recall_score)
+            
+            # টেস্ট মেট্রিক্স লগ করা
+            mlflow.log_metric("test_f1_score", test_metric.f1_score)
+            mlflow.log_metric("test_precision", test_metric.precision_score)
+            mlflow.log_metric("test_recall", test_metric.recall_score)
+            
+            # মডেল সেভ করা
+            mlflow.sklearn.log_model(best_model, "model")
 
         
     def train_model(self,X_train,y_train,X_test,y_test):
@@ -107,28 +127,25 @@ class ModelTrainer:
         }
             
         
-        model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,
-                                          models=models,param=params)
+        # মডেল ইভ্যালুয়েশন
+        model_report: dict = evaluate_models(X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test,
+                                            models=models, param=params)
 
         best_model_name = max(model_report, key=model_report.get)
-        best_model_score = model_report[best_model_name]
-            
-        logging.info(f"Best model : {best_model_name} | Score: {best_model_score:.4f}")
+        best_model = models[best_model_name]
         
-        best_model = models[best_model_name]  # from the list
-        
-        
-        # ------------------------------------------------------------------------------------------------------------------
-        
+        # মডেল ফিট করা
         best_model.fit(X_train, y_train)
 
-        y_train_pred=best_model.predict(X_train)
+        # প্রেডিকশন এবং স্কোর ক্যালকুলেশন
+        y_train_pred = best_model.predict(X_train)
+        classification_train_metric = get_classification_score(y_true=y_train, y_pred=y_train_pred)
 
-        classification_train_metric=get_classification_score(y_true=y_train,y_pred=y_train_pred)
+        y_test_pred = best_model.predict(X_test)
+        classification_test_metric = get_classification_score(y_true=y_test, y_pred=y_test_pred)
 
-        y_test_pred=best_model.predict(X_test)
-        
-        classification_test_metric=get_classification_score(y_true=y_test,y_pred=y_test_pred)
+        # একসাথে MLflow-তে ডাটা পাঠানো
+        self.track_mlflow(best_model, classification_train_metric, classification_test_metric)
 
         # ------------------------------------------------------------------------------------------------------------------
 
@@ -158,6 +175,7 @@ class ModelTrainer:
         
     def initiate_model_trainer(self)->ModelTrainerArtifact:
         try:
+            mlflow.set_experiment("Network_Security_Project")
             train_file_path = self.data_transformation_artifact.transformed_train_file_path
             test_file_path = self.data_transformation_artifact.transformed_test_file_path
 

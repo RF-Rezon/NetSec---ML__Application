@@ -1,0 +1,18 @@
+[ 2026-05-12 18:47:36,257 ] 19 root - INFO - Initiate the data ingestion.
+[ 2026-05-12 18:47:52,390 ] 69 root - INFO - Performed train test split on the dataframe
+[ 2026-05-12 18:47:52,390 ] 71 root - INFO - Exited split_data_as_train_test method of Data_Ingestion class
+[ 2026-05-12 18:47:52,390 ] 79 root - INFO - Exporting train and test file path.
+[ 2026-05-12 18:47:52,426 ] 88 root - INFO - Exported train and test file path.
+[ 2026-05-12 18:47:52,429 ] 26 root - INFO - Initiate the data validation.
+[ 2026-05-12 18:47:52,462 ] 33 root - INFO - Required number of columns:31
+[ 2026-05-12 18:47:52,463 ] 34 root - INFO - Data frame has columns:31
+[ 2026-05-12 18:47:52,463 ] 38 root - INFO - Numbers of columns are valid.
+[ 2026-05-12 18:47:52,463 ] 33 root - INFO - Required number of columns:31
+[ 2026-05-12 18:47:52,463 ] 34 root - INFO - Data frame has columns:31
+[ 2026-05-12 18:47:52,463 ] 38 root - INFO - Numbers of columns are valid.
+[ 2026-05-12 18:47:52,571 ] 30 root - INFO - data Validation Completed
+[ 2026-05-12 18:47:52,571 ] 65 root - INFO - Entered initiate_data_transformation method of DataTransformation class
+[ 2026-05-12 18:47:52,571 ] 67 root - INFO - Starting data transformation
+[ 2026-05-12 18:47:52,585 ] 49 root - INFO - Entered get_data_trnasformer_object method of Trnasformation class
+[ 2026-05-12 18:47:52,585 ] 54 root - INFO - Initialise KNNImputer with {'missing_values': nan, 'n_neighbors': 3, 'weights': 'uniform'}
+[ 2026-05-12 18:47:53,136 ] 81 root - INFO - \U0001f680 Training started: Random Forest
