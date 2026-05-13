@@ -1,0 +1,36 @@
+[ 2026-05-13 13:39:22,313 ] 19 root - INFO - Initiate the data ingestion.
+[ 2026-05-13 13:39:37,832 ] 69 root - INFO - Performed train test split on the dataframe
+[ 2026-05-13 13:39:37,832 ] 71 root - INFO - Exited split_data_as_train_test method of Data_Ingestion class
+[ 2026-05-13 13:39:37,832 ] 79 root - INFO - Exporting train and test file path.
+[ 2026-05-13 13:39:37,869 ] 88 root - INFO - Exported train and test file path.
+[ 2026-05-13 13:39:37,873 ] 26 root - INFO - Initiate the data validation.
+[ 2026-05-13 13:39:37,905 ] 33 root - INFO - Required number of columns:31
+[ 2026-05-13 13:39:37,905 ] 34 root - INFO - Data frame has columns:31
+[ 2026-05-13 13:39:37,905 ] 38 root - INFO - Numbers of columns are valid.
+[ 2026-05-13 13:39:37,905 ] 33 root - INFO - Required number of columns:31
+[ 2026-05-13 13:39:37,905 ] 34 root - INFO - Data frame has columns:31
+[ 2026-05-13 13:39:37,905 ] 38 root - INFO - Numbers of columns are valid.
+[ 2026-05-13 13:39:38,004 ] 30 root - INFO - data Validation Completed
+[ 2026-05-13 13:39:38,004 ] 65 root - INFO - Entered initiate_data_transformation method of DataTransformation class
+[ 2026-05-13 13:39:38,004 ] 67 root - INFO - Starting data transformation
+[ 2026-05-13 13:39:38,017 ] 49 root - INFO - Entered get_data_trnasformer_object method of Trnasformation class
+[ 2026-05-13 13:39:38,017 ] 54 root - INFO - Initialise KNNImputer with {'missing_values': nan, 'n_neighbors': 3, 'weights': 'uniform'}
+[ 2026-05-13 13:39:38,566 ] 81 root - INFO - \U0001f680 Training started: Random Forest
+[ 2026-05-13 13:39:46,530 ] 103 root - INFO - Random Forest | Train Score: 0.9625 | Test Score: 0.8728
+[ 2026-05-13 13:39:46,530 ] 81 root - INFO - \U0001f680 Training started: Decision Tree
+[ 2026-05-13 13:39:46,734 ] 103 root - INFO - Decision Tree | Train Score: 0.9373 | Test Score: 0.8157
+[ 2026-05-13 13:39:46,734 ] 81 root - INFO - \U0001f680 Training started: Gradient Boosting
+[ 2026-05-13 13:39:52,795 ] 103 root - INFO - Gradient Boosting | Train Score: 0.9414 | Test Score: 0.8765
+[ 2026-05-13 13:39:52,795 ] 81 root - INFO - \U0001f680 Training started: Logistic Regression
+[ 2026-05-13 13:39:53,055 ] 103 root - INFO - Logistic Regression | Train Score: 0.7208 | Test Score: 0.6628
+[ 2026-05-13 13:39:53,055 ] 81 root - INFO - \U0001f680 Training started: XGBClassifier
+[ 2026-05-13 13:39:54,534 ] 103 root - INFO - XGBClassifier | Train Score: 0.9437 | Test Score: 0.8636
+[ 2026-05-13 13:39:54,534 ] 81 root - INFO - \U0001f680 Training started: CatBoost Classifier
+[ 2026-05-13 13:39:58,212 ] 103 root - INFO - CatBoost Classifier | Train Score: 0.9359 | Test Score: 0.8821
+[ 2026-05-13 13:39:58,212 ] 81 root - INFO - \U0001f680 Training started: AdaBoost Classifier
+[ 2026-05-13 13:39:59,182 ] 103 root - INFO - AdaBoost Classifier | Train Score: 0.7405 | Test Score: 0.6922
+[ 2026-05-13 13:39:59,182 ] 81 root - INFO - \U0001f680 Training started: KNeighborsClassifier
+[ 2026-05-13 13:40:02,201 ] 103 root - INFO - KNeighborsClassifier | Train Score: 0.9625 | Test Score: 0.8378
+[ 2026-05-13 13:40:02,201 ] 81 root - INFO - \U0001f680 Training started: SVM
+[ 2026-05-13 13:40:13,408 ] 103 root - INFO - SVM | Train Score: 0.8979 | Test Score: 0.8231
+[ 2026-05-13 13:40:19,943 ] 169 root - INFO - Model trainer artifact: ModelTrainerArtifact(trained_model_file_path='Artifacts\\05_13_2026_13_39_19\\model_trainer\\trained_model\\model.pkl', train_metric_artifact=ClassificationMetricArtifact(f1_score=0.9877045015750432, precision_score=0.9840048592832558, recall_score=0.9914320685434517), test_metric_artifact=ClassificationMetricArtifact(f1_score=0.9745425616547335, precision_score=0.9729944400317713, recall_score=0.9760956175298805))

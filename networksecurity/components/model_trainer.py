@@ -22,6 +22,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from xgboost import XGBClassifier
 from catboost import CatBoostClassifier
 from sklearn.svm import SVC
+
 import mlflow
 
 class ModelTrainer:
@@ -56,74 +57,101 @@ class ModelTrainer:
     def train_model(self,X_train,y_train,X_test,y_test):
 
         models = {
-            "Random Forest": RandomForestClassifier(random_state=42, n_jobs=-1),
-            "Decision Tree": DecisionTreeClassifier(random_state=42),
-            "Gradient Boosting": GradientBoostingClassifier(random_state=42),
-            "Logistic Regression": LogisticRegression(random_state=42, max_iter=1000, n_jobs=-1),
-            "XGBClassifier": XGBClassifier(random_state=42, n_jobs=-1, eval_metric='logloss'),
-            "CatBoost Classifier": CatBoostClassifier(random_state=42, verbose=False),
-            "AdaBoost Classifier": AdaBoostClassifier(random_state=42),
-            "KNeighborsClassifier": KNeighborsClassifier(n_jobs=-1),
-            "SVM": SVC (random_state=42, probability=True)
+        "Decision Tree": DecisionTreeClassifier(random_state=42),
+        "Gradient Boosting": GradientBoostingClassifier(random_state=42),
+        "Logistic Regression": LogisticRegression(random_state=42, max_iter=1000),
+        "XGBClassifier": XGBClassifier(random_state=42, eval_metric='logloss'),
+        "CatBoost Classifier": CatBoostClassifier(random_state=42, verbose=False),
+        "AdaBoost Classifier": AdaBoostClassifier(random_state=42),
+        "Random Forest": RandomForestClassifier(random_state=42),
+        "KNeighborsClassifier": KNeighborsClassifier(),
+        "SVM": SVC(random_state=42, probability=True)
         }
 
         params = {
-        "Random Forest": {
-            "n_estimators": [100, 200],
-            "max_depth": [10, 20, None],
-            "min_samples_split": [2, 5],
-            "criterion": ["gini", "entropy"]
-        },
-        
         "Decision Tree": {
-            "max_depth": [5, 10, 15],
-            "min_samples_leaf": [1, 5],
-            "criterion": ["gini", "entropy"]
+            "max_depth": [3, 5, 10, 15, None],
+            "min_samples_split": [2, 5, 10],
+            "min_samples_leaf": [1, 2, 5],
+            "criterion": ["gini", "entropy"],
+            "splitter": ["best", "random"],
+            "max_features": [None, "sqrt", "log2"],
         },
         
         "Gradient Boosting": {
-            "n_estimators": [100, 200],
-            "learning_rate": [0.1, 0.05],
-            "max_depth": [3, 5],
-            "subsample": [0.8, 1.0]
+            "n_estimators": [100, 200, 300],
+            "learning_rate": [0.05, 0.1, 0.2],
+            "max_depth": [3, 4, 5],
+            "min_samples_split": [2, 5],
+            "min_samples_leaf": [1, 2],
+            "subsample": [0.8, 0.9, 1.0],
+            "max_features": [None, "sqrt"],
         },
         
         "Logistic Regression": {
-            "C": [0.1, 1.0, 10],
-            "solver": ["lbfgs", "liblinear"]
+            "C": [0.01, 0.1, 1.0, 10, 100],
+            "penalty": ["l2"],
+            "solver": ["lbfgs", "saga"],
+            "max_iter": [1000, 2000],
+            "class_weight": [None, "balanced"],
+            "l1_ratio": [0.1, 0.5, 0.9],  # for elasticnet
         },
         
         "XGBClassifier": {
-            "n_estimators": [100, 200],
-            "learning_rate": [0.1, 0.01],
-            "max_depth": [3, 5, 7],
-            "n_jobs": [-1]
+            "n_estimators": [100, 200, 300],
+            "learning_rate": [0.01, 0.05, 0.1, 0.2],
+            "max_depth": [3, 5, 7, 9],
+            "min_child_weight": [1, 3, 5],
+            "subsample": [0.8, 1.0],
+            "colsample_bytree": [0.8, 1.0],
+            "gamma": [0, 0.1, 0.2],
+            "reg_alpha": [0, 0.01, 0.1],
+            "reg_lambda": [0.5, 1, 2],
         },
         
         "CatBoost Classifier": {
-            "iterations": [100, 200],
-            "learning_rate": [0.1, 0.05],
-            "depth": [4, 6],
-            "verbose": [False]
+            "iterations": [100, 200, 300],
+            "learning_rate": [0.03, 0.05, 0.1],
+            "depth": [4, 6, 8],
+            "l2_leaf_reg": [1, 3, 5],
+            "min_data_in_leaf": [1, 3, 5],
+            "bagging_temperature": [0, 0.5, 1],
         },
         
         "AdaBoost Classifier": {
-            "n_estimators": [50, 100],
-            "learning_rate": [0.1, 1.0]
+            "n_estimators": [50, 100, 200],
+            "learning_rate": [0.05, 0.1, 0.5, 1.0]
+        },
+        
+        "Random Forest": {
+            "n_estimators": [100, 200, 300, 500],
+            "max_depth": [10, 15, 20, 30, None],
+            "min_samples_split": [2, 5, 10],
+            "min_samples_leaf": [1, 2, 4],
+            "max_features": ["sqrt", "log2", None],
+            "criterion": ["gini", "entropy", "log_loss"],
+            "bootstrap": [True, False],
+            "class_weight": [None, "balanced"],
         },
         
         "KNeighborsClassifier": {
-            "n_neighbors": [3, 5, 11],
+            "n_neighbors": [3, 5, 7, 11, 15, 21],
             "weights": ["uniform", "distance"],
-            "metric": ["euclidean", "manhattan"]
+            "algorithm": ["auto", "ball_tree", "kd_tree"],
+            "p": [1, 2, 3],
+            "leaf_size": [20, 30, 40],
+            "metric": ["euclidean", "manhattan", "chebyshev"],
         },
         
         "SVM": {
-            "C": [0.1, 1, 10],
-            "kernel": ["rbf", "linear"],
-            "gamma": ["scale"]
+            "C": [0.01, 0.1, 1, 10, 100],
+            "kernel": ["linear", "poly", "rbf", "sigmoid"],
+            "gamma": ["scale", "auto", 0.01, 0.1, 1],
+            "degree": [2, 3, 4],  # for poly kernel
+            "coef0": [0, 0.1, 1],  # for poly/sigmoid
+            "class_weight": [None, "balanced"],
+            "shrinking": [True, False],
         }
-        
         }
             
         
@@ -159,8 +187,13 @@ class ModelTrainer:
 
         save_object(self.model_trainer_config.trained_model_file_path,obj= network_model)    # Object tao rakha thaklo [ preprocessor +  model ]
 
-        save_object("final_model/model.pkl",best_model)     # Model tao rakha thaklo [ model ]
-        
+
+        # --------------------------------------------------------------------------------------------------------------------
+
+        save_object("final_model/model.pkl",best_model)     # Final model er jonno. 
+
+        # --------------------------------------------------------------------------------------------------------------------
+
 
         ## Model Trainer Artifact
         model_trainer_artifact=ModelTrainerArtifact(trained_model_file_path=self.model_trainer_config.trained_model_file_path,
