@@ -24,7 +24,7 @@ from networksecurity.utils.ml_utils.model.estimator import NetworkModel
 
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-
+from fastapi.background import BackgroundTasks
 
 app = FastAPI()
 origins = ["*"]
@@ -51,22 +51,18 @@ async def index():
 async def app_page():
     return FileResponse("static/app.html")
 
-    
+
 @app.get("/train")
-async def train_route():
+async def train_route(background_tasks: BackgroundTasks):
     try:
-        train_pipeline = TrainingPipeline()
-        train_pipeline.run_pipeline()
-        
-        # best model name বের করো
-        model = load_object("final_model/model.pkl")
-        model_name = type(model).__name__
-        
-        return {"message": "Training successful", "best_model": model_name}
+        background_tasks.add_task(run_training)
+        return {"message": "Training started in background"}
     except Exception as e:
         raise NetworkSecurityException(e, sys)
 
-    
+def run_training():
+    train_pipeline = TrainingPipeline()
+    train_pipeline.run_pipeline()
     
 @app.post("/predict")
 async def predict_route(request: Request,file: UploadFile = File(...)):

@@ -318,7 +318,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 </div>
 
 <script>
-  
+
 const BASE = window.location.origin;
 
 let resultCSV = null, bestModel = 'model.pkl', trainDone = false;
@@ -392,7 +392,9 @@ async function startTraining(){
     for(let i=1;i<=4;i++) setStep(i,'');
     const err=document.getElementById('train-err');
     err.style.display='block';
-    err.textContent='Training failed: '+e.message+'. Make sure API is running on port 1234.';
+    err.textContent = e.message.includes('502') 
+  ? 'Training timed out (502). Training is still running on the server — wait 2-3 minutes then go to predict directly.' 
+  : 'Training failed: ' + e.message;
   }
 
   btn.disabled=false;
