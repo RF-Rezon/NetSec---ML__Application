@@ -45,9 +45,6 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 async def index():
     return FileResponse("static/index.html")
 
-# @app.get("/index.html")
-# async def index():
-#     return FileResponse("static/index.html")
 
 @app.get("/app.html")
 async def app_page():
@@ -104,5 +101,6 @@ async def index():
 
     
 if __name__=="__main__":
-    app_run(app,host="0.0.0.0", port=5000)
+    app_run(app,host="0.0.0.0", port=5000)   # for render. don't work on my pc. 
+    # app_run(app,host="127.0.0.1" , port=5000)  # for localhost.
     
