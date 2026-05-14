@@ -1,0 +1,93 @@
+having_IP_Address:
+  p_value: 0.3977611372826828
+  drift_status: false
+URL_Length:
+  p_value: 0.9763752606358573
+  drift_status: false
+Shortining_Service:
+  p_value: 0.9876237011526984
+  drift_status: false
+having_At_Symbol:
+  p_value: 0.9860900857001905
+  drift_status: false
+double_slash_redirecting:
+  p_value: 0.9996208033369954
+  drift_status: false
+Prefix_Suffix:
+  p_value: 0.999999999999956
+  drift_status: false
+having_Sub_Domain:
+  p_value: 0.9687622789382879
+  drift_status: false
+SSLfinal_State:
+  p_value: 0.9999062353866229
+  drift_status: false
+Domain_registeration_length:
+  p_value: 0.9413205455808915
+  drift_status: false
+Favicon:
+  p_value: 0.8865910920599936
+  drift_status: false
+port:
+  p_value: 0.9990438890770315
+  drift_status: false
+HTTPS_token:
+  p_value: 0.9999999998789996
+  drift_status: false
+Request_URL:
+  p_value: 0.9995152509457711
+  drift_status: false
+URL_of_Anchor:
+  p_value: 0.7710771491561995
+  drift_status: false
+Links_in_tags:
+  p_value: 0.9998728965778992
+  drift_status: false
+SFH:
+  p_value: 0.8979221700912247
+  drift_status: false
+Submitting_to_email:
+  p_value: 0.9999999883158472
+  drift_status: false
+Abnormal_URL:
+  p_value: 1.0
+  drift_status: false
+Redirect:
+  p_value: 1.0
+  drift_status: false
+on_mouseover:
+  p_value: 0.8685540728180071
+  drift_status: false
+RightClick:
+  p_value: 1.0
+  drift_status: false
+popUpWidnow:
+  p_value: 0.9086653866244705
+  drift_status: false
+Iframe:
+  p_value: 0.98068847421368
+  drift_status: false
+age_of_domain:
+  p_value: 0.9999062353866229
+  drift_status: false
+DNSRecord:
+  p_value: 0.999230651758703
+  drift_status: false
+web_traffic:
+  p_value: 0.9999996521355587
+  drift_status: false
+Page_Rank:
+  p_value: 0.6930334890847099
+  drift_status: false
+Google_Index:
+  p_value: 0.9993864328065777
+  drift_status: false
+Links_pointing_to_page:
+  p_value: 0.9999999996602011
+  drift_status: false
+Statistical_report:
+  p_value: 1.0
+  drift_status: false
+Result:
+  p_value: 1.0
+  drift_status: false

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetSec — AI Threat Detection</title>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f5;--white:#ffffff;--dark:#0a0e1a;--blue:#1a6fff;--blue2:#0a4fd4;
+  --text:#0a0e1a;--muted:#6b7280;--pill-bg:rgba(255,255,255,0.92);
+  --sans:'Inter',sans-serif;--display:'Michroma',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 3rem;background:rgba(240,242,245,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.6)}
+.nav-logo{font-family:var(--display);font-size:18px;font-weight:800;letter-spacing:-1px;color:var(--dark)}
+.nav-logo span{color:var(--blue)}
+.nav-links{display:flex;align-items:center;gap:2.5rem}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--dark)}
+.nav-cta{background:var(--dark);color:#fff;padding:9px 22px;border-radius:100px;font-size:13px;font-weight:500;text-decoration:none;transition:opacity .2s}
+.nav-cta:hover{opacity:.8}
+
+/* HERO */
+.hero{min-height:100vh;padding:8rem 3rem 4rem;position:relative;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.hero-bg-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--display);font-size:clamp(120px,18vw,240px);font-weight:800;color:transparent;-webkit-text-stroke:1.5px rgba(10,14,26,0.07);white-space:nowrap;pointer-events:none;user-select:none;letter-spacing:-4px;line-height:1}
+.hero-bg-text2{top:calc(50% + clamp(90px,13vw,180px))}
+
+/* floating pills */
+.pill{position:absolute;display:flex;align-items:center;gap:8px;background:var(--pill-bg);border:1px solid rgba(255,255,255,0.9);border-radius:100px;padding:8px 16px 8px 10px;backdrop-filter:blur(10px);box-shadow:0 4px 24px rgba(0,0,0,0.08);font-size:12px;font-weight:500;color:var(--dark);animation:float 4s ease-in-out infinite}
+.pill-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.pill-dot.blue{background:var(--blue);color:#fff}
+.pill-dot.green{background:#10b981;color:#fff}
+.pill-dot.amber{background:#f59e0b;color:#fff}
+.pill .val{font-family:var(--display);font-size:13px;font-weight:800;color:var(--blue)}
+.pill1{top:22%;left:6%;animation-delay:0s}
+.pill2{top:38%;right:8%;animation-delay:1.2s}
+.pill3{top:58%;left:5%;animation-delay:0.6s}
+.pill4{top:72%;left:5%;animation-delay:1.8s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* hero visual placeholder */
+.hero-visual{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:clamp(320px,45vw,560px);height:clamp(320px,45vw,560px);pointer-events:none}
+.hero-visual-circle{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(26,111,255,0.12)}
+.hero-visual-circle:nth-child(1){inset:15%;animation:rotateCW 18s linear infinite}
+.hero-visual-circle:nth-child(2){inset:30%;animation:rotateCCW 12s linear infinite;border-style:dashed}
+.hero-visual-center{position:absolute;inset:35%;border-radius:50%;background:linear-gradient(135deg,rgba(26,111,255,0.15),rgba(10,14,26,0.05));border:1px solid rgba(26,111,255,0.2);display:flex;align-items:center;justify-content:center}
+.hero-visual-icon{width:48px;height:48px;stroke:var(--blue);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:.7}
+@keyframes rotateCW{to{transform:rotate(360deg)}}
+@keyframes rotateCCW{to{transform:rotate(-360deg)}}
+
+
+.ripple{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  border:1.5px solid rgba(26,111,255,0.35);
+  animation:rippleOut 3s ease-out infinite;
+  pointer-events:none;
+}
+.r1{width:80px;height:80px;animation-delay:0s}
+.r2{width:80px;height:80px;animation-delay:1s}
+.r3{width:80px;height:80px;animation-delay:2s}
+
+@keyframes rippleOut{
+  /* 0%  {width:80px;height:80px;opacity:.8;border-color:rgba(26,111,255,0.5)} */
+  100%{width:380px;height:380px;opacity:0;border-color:rgba(26,111,255,0)}
+}
+
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;position:relative;z-index:2;flex-wrap:wrap;gap:2rem}
+.hero-headline{max-width:380px}
+.hero-headline h1{font-family:var(--display);font-size:clamp(28px,4vw,46px);font-weight:800;line-height:1.05;letter-spacing:-1.5px;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,0.3)}
+.hero-headline h1 span{color:var(--blue)}
+.hero-cta-wrap{display:flex;align-items:center;gap:12px;margin-top:1.5rem}
+.hero-cta-main{background:#fff;color:var(--dark);padding:12px 28px;border-radius:100px;font-size:14px;font-weight:600;text-decoration:none;transition:all .2s}
+.hero-cta-main:hover{background:var(--blue);color:#fff}
+
+.hero-right{max-width:300px;text-align:right}
+.hero-right h2{font-family:var(--display);font-size:clamp(24px,3.5vw,38px);font-weight:800;line-height:1.1;letter-spacing:-1px;color:#fff}
+.hero-right h2 span{color:var(--blue)}
+.hero-right p{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;margin-top:.75rem}
+
+/* dark gradient over hero bottom */
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:65%;background:linear-gradient(to top,rgba(10,14,26,0.82) 0%,transparent 100%);pointer-events:none;z-index:1}
+
+/* STATS BAR */
+.stats-bar{background:var(--white);border-top:1px solid rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.06);display:flex;divide:auto}
+.stat-item{flex:1;padding:1.5rem 2rem;text-align:center;border-right:1px solid rgba(0,0,0,0.06)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:var(--display);font-size:32px;font-weight:800;color:var(--dark);letter-spacing:-1px}
+.stat-num span{color:var(--blue)}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* SECTIONS */
+.section{padding:5rem 3rem;max-width:1100px;margin:0 auto}
+.section-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(26,111,255,0.08);border:1px solid rgba(26,111,255,0.15);color:var(--blue);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:500;margin-bottom:1.5rem}
+.section-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.section-title{font-family:var(--display);font-size:clamp(32px,5vw,56px);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:1rem}
+.section-title em{font-style:normal;color:var(--blue)}
+.section-sub{font-size:15px;color:var(--muted);max-width:480px;line-height:1.7}
+
+/* HOW IT WORKS */
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:rgba(0,0,0,0.06);border-radius:20px;overflow:hidden;margin-top:3rem}
+.how-card{background:var(--white);padding:2rem;position:relative}
+.how-num{font-family:var(--display);font-size:48px;font-weight:800;color:rgba(26,111,255,0.08);position:absolute;top:1.25rem;right:1.5rem;line-height:1}
+.how-icon{width:40px;height:40px;background:rgba(26,111,255,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem}
+.how-icon svg{width:20px;height:20px;stroke:var(--blue);fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.how-title{font-size:15px;font-weight:600;margin-bottom:.5rem;color:var(--dark)}
+.how-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* CTA SECTION */
+.cta-section{background:var(--dark);margin:4rem 2rem 6rem;border-radius:24px;padding:4rem 3rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.cta-left h2{font-family:var(--display);font-size:clamp(28px,4vw,44px);font-weight:800;color:#fff;letter-spacing:-1.5px;line-height:1.05}
+.cta-left h2 em{font-style:normal;color:var(--blue)}
+.cta-left p{font-size:14px;color:rgba(255,255,255,0.5);margin-top:.75rem;line-height:1.6}
+.cta-btn{background:var(--blue);color:#fff;padding:14px 32px;border-radius:100px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;transition:opacity .2s}
+.cta-btn:hover{opacity:.85}
+
+/* FOOTER */
+footer{padding:1.5rem 3rem;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(0,0,0,0.08)}
+.footer-logo{font-family:var(--display);font-size:15px;font-weight:800;color:var(--dark)}
+.footer-logo span{color:var(--blue)}
+.footer-right{font-size:12px;color:var(--muted)}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.25rem}
+  .nav-links{display:none}
+  .hero{padding:6rem 1.25rem 3rem}
+  .hero-bg-text{font-size:80px}
+  .pill1,.pill4{display:none}
+  .section{padding:3rem 1.25rem}
+  .stats-bar{flex-wrap:wrap}
+  .stat-item{min-width:50%;border-right:none;border-bottom:1px solid rgba(0,0,0,0.06)}
+  .cta-section{margin:0 1rem 2rem;padding:2.5rem 1.5rem}
+  footer{padding:1.25rem;flex-direction:column;gap:.5rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">NET<span>SEC</span></div>
+  <div class="nav-links">
+    <a href="#" class="active">Home</a>
+    <a href="#how">How it works</a>
+    <a href="app.html">App</a>
+  </div>
+  <a href="app.html" class="nav-cta">Run Detection →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-text">NETSEC</div>
+  <div class="hero-bg-text hero-bg-text2">CYBER</div>
+
+  <!-- floating pills -->
+  <div class="pill pill1">
+    <div class="pill-dot blue">%</div>
+    <div><div class="val">99.9%</div>Threats Detection Rate</div>
+  </div>
+  <div class="pill pill2">
+    <div class="pill-dot green">⚡</div>
+    <div><div class="val">&lt;1s</div>Response Time</div>
+  </div>
+  <div class="pill pill3">
+    <div class="pill-dot blue">🛡</div>
+    <div><div class="val">1.4m+</div>Threats Blocked</div>
+  </div>
+  <div class="pill pill4">
+    <div class="pill-dot amber">◉</div>
+    <div><div class="val">24/7</div>Autonomous Monitoring</div>
+  </div>
+
+  <!-- center visual -->
+  <div class="hero-visual">
+    <div class="hero-visual-circle"></div>
+    <!-- <div class="hero-visual-circle"></div> -->
+    <div class="ripple r1"></div>
+    <div class="ripple r2"></div>
+    <div class="ripple r3"></div>
+    <div class="hero-visual-center">
+      <svg class="hero-visual-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+    </div>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-headline">
+      <h1>Protecting Digital<br><span>Enterprises</span></h1>
+      <div class="hero-cta-wrap">
+        <a href="app.html" class="hero-cta-main">Get Protected →</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <h2>AI Network<br><span>Defense</span><br>Platform</h2>
+      <p>Uses ML models to detect, prevent, and classify network threats in real-time from your CSV data.</p>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">4<span>+</span></div><div class="stat-lbl">Pipeline stages</div></div>
+  <div class="stat-item"><div class="stat-num">0<span>/</span>1</div><div class="stat-lbl">Output classes</div></div>
+  <div class="stat-item"><div class="stat-num">&lt;<span>1s</span></div><div class="stat-lbl">Prediction time</div></div>
+  <div class="stat-item"><div class="stat-num">99<span>%</span></div><div class="stat-lbl">Accuracy</div></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section" id="how">
+  <div class="section-tag"><span class="section-tag-dot"></span>How it works</div>
+  <div class="section-title">4 Easy Methods<br><em>To Start</em></div>
+  <div class="section-sub">Train once, predict forever. Our pipeline handles everything from raw data to instant threat classification.</div>
+
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">01</div>
+      <div class="how-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+      <div class="how-title">Train the model</div>
+      <div class="how-desc">Run the full ML pipeline — ingestion, validation, transformation, and model selection.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02</div>
+      <div class="how-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+      <div class="how-title">Upload CSV</div>
+      <div class="how-desc">Drop your network traffic CSV. Preprocessor handles feature engineering automatically.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">03</div>
+      <div class="how-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <div class="how-title">Analyze behavior</div>
+      <div class="how-desc">Model scans each row for known attack patterns and anomalous traffic signatures.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">04</div>
+      <div class="how-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <div class="how-title">See results</div>
+      <div class="how-desc">Instant classification — 0 for normal, 1 for threat — with threat rate and verdict.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-left">
+    <h2>Powerful Security<br><em>Simplified</em> Control</h2>
+    <p>Train your model on your own data. Predict threats in real-time. No cloud dependency.</p>
+  </div>
+  <a href="app.html" class="cta-btn">Start Detection →</a>
+</div>
+
+<footer>
+  <div class="footer-logo">NET<span>SEC</span></div>
+  <div class="footer-right">AI Network Threat Detection · ML Project</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetSec — App</title>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f5;--white:#ffffff;--dark:#0a0e1a;--blue:#1a6fff;
+  --muted:#6b7280;--danger:#dc2626;--danger-bg:#fef2f2;--danger-border:#fecaca;
+  --teal:#1565ef;--teal-bg:#d9e7ff;--teal-border:#6ca2ff;
+  --border:rgba(0,0,0,0.07);
+  --sans:'Inter',sans-serif;--display:'Michroma',sans-serif;
+}
+body{background:var(--bg);color:var(--dark);font-family:var(--sans);min-height:100vh}
+
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(240,242,245,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--display);font-size:17px;font-weight:800;color:var(--dark);text-decoration:none;letter-spacing:-0.5px}
+.nav-logo span{color:var(--blue)}
+.nav-back{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s}
+.nav-back:hover{color:var(--dark)}
+.nav-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.nav-phase{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);background:rgba(26,111,255,0.08);padding:4px 12px;border-radius:100px}
+
+.app{max-width:700px;margin:0 auto;padding:3rem 2rem 5rem}
+.phase{display:none}.phase.active{display:block}
+
+/* section tag */
+.stag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.stag-line{width:20px;height:1px;background:var(--muted)}
+
+/* big title */
+.big-title{font-family:var(--display);font-size:clamp(36px,6vw,60px);font-weight:800;letter-spacing:-2px;line-height:1.0;margin-bottom:1rem}
+.big-title em{font-style:normal;color:var(--blue)}
+.sub-text{font-size:14px;color:var(--muted);line-height:1.7;max-width:480px;margin-bottom:2.5rem}
+
+/* PIPELINE */
+.pipeline{border-radius:20px;overflow:hidden;border:1px solid var(--border);background:var(--white);margin-bottom:2rem}
+.pipe-step{display:flex;align-items:center;gap:16px;padding:1.1rem 1.5rem;border-bottom:1px solid var(--border);position:relative;overflow:hidden;transition:background .4s}
+.pipe-step:last-child{border-bottom:none}
+.pipe-bg{position:absolute;inset:0;background:rgba(26,111,255,0.04);transform:scaleX(0);transform-origin:left;transition:transform 2s ease;z-index:0}
+.pipe-step.running .pipe-bg{transform:scaleX(1)}
+.pipe-step.done .pipe-bg{transform:scaleX(1);background:rgba(26,111,255,0.04)}
+.pipe-inner{position:relative;z-index:1;display:flex;align-items:center;gap:16px;width:100%}
+.pipe-num{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;transition:all .3s;font-family:var(--display)}
+.pipe-step.running .pipe-num{border-color:var(--blue);color:var(--blue);background:#fff;animation:pulseBorder 1.2s ease-in-out infinite}
+.pipe-step.done .pipe-num{border-color:var(--teal);background:var(--teal);color:#fff;border-width:0}
+@keyframes pulseBorder{0%,100%{box-shadow:0 0 0 0 rgba(26,111,255,0.3)}50%{box-shadow:0 0 0 6px rgba(26,111,255,0)}}
+.pipe-info{flex:1}
+.pipe-name{font-size:14px;font-weight:600;color:var(--dark);margin-bottom:2px}
+.pipe-desc{font-size:12px;color:var(--muted)}
+.pipe-tag{font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;white-space:nowrap;transition:all .3s}
+.pipe-tag.idle{background:var(--bg);color:var(--muted)}
+.pipe-tag.running{background:rgba(26,111,255,0.1);color:var(--blue)}
+.pipe-tag.done{background:rgba(26,111,255,0.1);color:var(--blue)}
+
+/* best model card */
+.model-card{display:none;background:var(--white);border:1.5px solid var(--teal-border);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:2rem;animation:slideUp .4s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.model-card-top{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem}
+.model-card-name{font-family:var(--display);font-size:22px;font-weight:800;color:var(--dark);letter-spacing:-0.5px;margin-bottom:4px}
+.model-card-path{font-size:12px;color:var(--muted);font-family:monospace}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:100px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);transition:all .18s;text-decoration:none}
+.btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.btn-dark{background:var(--dark);color:#fff}.btn-dark:hover{opacity:.82}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{opacity:.85}
+.btn-ghost{background:var(--white);color:var(--dark);border:1.5px solid var(--border)}.btn-ghost:hover{border-color:rgba(0,0,0,0.2)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+
+/* ERROR */
+.err-box{display:none;margin-top:1rem;font-size:13px;color:var(--danger);background:var(--danger-bg);border:1px solid var(--danger-border);border-radius:12px;padding:.85rem 1.1rem;font-family:monospace}
+
+/* UPLOAD */
+.upload-zone{border:1.5px dashed rgba(0,0,0,0.15);border-radius:20px;padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--white);margin-bottom:1.5rem}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--blue);background:rgba(26,111,255,0.02)}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{width:48px;height:48px;border-radius:14px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.upload-icon svg{width:22px;height:22px;stroke:var(--muted);fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.upload-title{font-size:15px;font-weight:600;color:var(--dark);margin-bottom:.4rem}
+.upload-sub{font-size:13px;color:var(--muted)}
+.file-pill{display:none;margin-top:.75rem;display:none;align-items:center;justify-content:center;gap:6px;background:rgba(26,111,255,0.07);color:var(--blue);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:500;font-family:monospace}
+
+/* LOADING */
+.loading-wrap{text-align:center;padding:5rem 1rem}
+.spinner{width:52px;height:52px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin 0.9s linear infinite;margin:0 auto 2rem}
+@keyframes spin{to{transform:rotate(-360deg)}}
+.loading-title{font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:-1px;color:var(--dark);margin-bottom:.5rem}
+.loading-sub{font-size:13px;color:var(--muted)}
+
+/* RESULT */
+.result-header{margin-bottom:2rem}
+.result-title{font-family:var(--display);font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-2px;line-height:1.05}
+.result-title em{font-style:normal;color:var(--blue)}
+.model-tag{display:inline-flex;align-items:center;gap:6px;margin-top:.75rem;font-size:12px;color:var(--muted);background:var(--white);border:1px solid var(--border);padding:4px 12px;border-radius:100px}
+.model-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--teal)}
+
+.r-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
+.r-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem}
+.r-card-lbl{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.r-card-val{font-family:var(--display);font-size:38px;font-weight:800;letter-spacing:-2px}
+.r-card-val.blue{color:var(--blue)}
+.r-card-val.danger{color:var(--danger)}
+
+/* bars */
+.bar-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem}
+.bar-row{margin-bottom:1.25rem}
+.bar-row:last-child{margin-bottom:0}
+.bar-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
+.bar-label{font-size:13px;font-weight:500;color:var(--dark)}
+.bar-pct{font-family:var(--display);font-size:15px;font-weight:800}
+.bar-pct.danger{color:var(--danger)}
+.bar-pct.safe{color:var(--teal)}
+.bar-track{height:8px;background:var(--bg);border-radius:100px;overflow:hidden}
+.bar-fill{height:100%;border-radius:100px;width:0%;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.bar-fill.danger{background:var(--danger)}
+.bar-fill.safe{background:var(--teal)}
+
+/* verdict */
+.verdict-card{border-radius:20px;padding:2rem;margin-bottom:2rem;display:flex;align-items:center;gap:1.25rem;animation:slideUp .5s .2s both}
+.verdict-card.safe{background:var(--teal-bg);border:1px solid var(--teal-border)}
+.verdict-card.threat{background:var(--danger-bg);border:1px solid var(--danger-border)}
+.verdict-icon{width:52px;height:52px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.verdict-card.safe .verdict-icon{background:rgba(5,150,105,0.15)}
+.verdict-card.threat .verdict-icon{background:rgba(220,38,38,0.12)}
+.verdict-card.safe .verdict-icon svg{stroke:var(--teal)}
+.verdict-card.threat .verdict-icon svg{stroke:var(--danger)}
+.verdict-icon svg{width:24px;height:24px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.verdict-title{font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px}
+.verdict-card.safe .verdict-title{color:var(--teal)}
+.verdict-card.threat .verdict-title{color:var(--danger)}
+.verdict-sub{font-size:13px;color:var(--muted);line-height:1.5}
+
+@media(max-width:600px){
+  .app{padding:2rem 1.25rem 4rem}
+  nav{padding:1rem 1.25rem}
+  .r-grid{grid-template-columns:1fr 1fr}
+  .big-title{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-back">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Home
+  </a>
+  <a href="/" class="nav-logo">NET<span>SEC</span></a>
+  <div class="nav-phase" id="nav-phase">Train</div>
+</nav>
+
+<div class="app">
+
+  <!-- ══ PHASE: TRAIN ══ -->
+  <div class="phase active" id="phase-train">
+    <div class="stag"><div class="stag-line"></div>Step 1 of 2</div>
+    <div class="big-title">Train the<br><em>model</em></div>
+    <div class="sub-text">Run the full ML pipeline — data ingestion, validation, transformation, and model training — before making predictions.</div>
+
+    <div class="pipeline">
+      <div class="pipe-step" id="ps-1">
+        <div class="pipe-bg"></div>
+        <div class="pipe-inner">
+          <div class="pipe-num" id="pn-1">1</div>
+          <div class="pipe-info"><div class="pipe-name">Data ingestion</div><div class="pipe-desc">Pull records from MongoDB</div></div>
+          <div class="pipe-tag idle" id="pt-1">Idle</div>
+        </div>
+      </div>
+      <div class="pipe-step" id="ps-2">
+        <div class="pipe-bg"></div>
+        <div class="pipe-inner">
+          <div class="pipe-num" id="pn-2">2</div>
+          <div class="pipe-info"><div class="pipe-name">Data validation</div><div class="pipe-desc">Schema checks &amp; drift detection</div></div>
+          <div class="pipe-tag idle" id="pt-2">Idle</div>
+        </div>
+      </div>
+      <div class="pipe-step" id="ps-3">
+        <div class="pipe-bg"></div>
+        <div class="pipe-inner">
+          <div class="pipe-num" id="pn-3">3</div>
+          <div class="pipe-info"><div class="pipe-name">Data transformation</div><div class="pipe-desc">Preprocessing &amp; feature engineering</div></div>
+          <div class="pipe-tag idle" id="pt-3">Idle</div>
+        </div>
+      </div>
+      <div class="pipe-step" id="ps-4">
+        <div class="pipe-bg"></div>
+        <div class="pipe-inner">
+          <div class="pipe-num" id="pn-4">4</div>
+          <div class="pipe-info"><div class="pipe-name">Model trainer</div><div class="pipe-desc">Train, evaluate &amp; select best model</div></div>
+          <div class="pipe-tag idle" id="pt-4">Idle</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="model-card" id="model-card">
+      <div class="model-card-top">Best model selected</div>
+      <div class="model-card-name" id="best-model-name">—</div>
+      <div class="model-card-path">Saved → final_model/model.pkl</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-dark" id="train-btn" onclick="startTraining()">
+        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Start training
+      </button>
+      <button class="btn btn-ghost" id="continue-btn" style="display:none" onclick="showPhase('predict')">
+        Continue to predict
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+    <div class="err-box" id="train-err"></div>
+  </div>
+
+  <!-- ══ PHASE: PREDICT ══ -->
+  <div class="phase" id="phase-predict">
+    <div class="stag"><div class="stag-line"></div>Step 2 of 2</div>
+    <div class="big-title">Upload &amp;<br><em>predict</em></div>
+    <div class="sub-text">Drop your network traffic CSV. The trained model classifies each connection as normal or threat.</div>
+
+    <div class="upload-zone" id="drop-zone">
+      <input type="file" accept=".csv" id="file-input" onchange="onFileChange(this)">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <div class="upload-title">Drop CSV file here</div>
+      <div class="upload-sub">or click to browse</div>
+      <div class="file-pill" id="file-pill" style="display:none">
+        <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
+        <span id="file-name-txt"></span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-blue" id="predict-btn" disabled onclick="runPredict()">
+        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Run prediction
+      </button>
+      <button class="btn btn-ghost" onclick="showPhase('train')">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to train
+      </button>
+    </div>
+    <div class="err-box" id="predict-err"></div>
+  </div>
+
+  <!-- ══ PHASE: LOADING ══ -->
+  <div class="phase" id="phase-loading">
+    <div class="loading-wrap">
+      <div class="spinner"></div>
+      <div class="loading-title">Predicting your data</div>
+      <div class="loading-sub" id="loading-sub">Preprocessing features...</div>
+    </div>
+  </div>
+
+  <!-- ══ PHASE: RESULT ══ -->
+  <div class="phase" id="phase-result">
+    <div class="result-header">
+      <div class="stag"><div class="stag-line"></div>Results</div>
+      <div class="result-title">Prediction<br><em>complete</em></div>
+      <div class="model-tag"><span class="model-tag-dot"></span><span id="result-model-tag">model.pkl</span></div>
+    </div>
+
+    <div class="r-grid">
+      <div class="r-card">
+        <div class="r-card-lbl">Total records</div>
+        <div class="r-card-val blue" id="r-total">—</div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-lbl">Threat rate</div>
+        <div class="r-card-val danger" id="r-rate">—</div>
+      </div>
+    </div>
+
+    <div class="bar-card">
+      <div class="bar-row">
+        <div class="bar-meta">
+          <div class="bar-label">Threats detected (1.0)</div>
+          <div class="bar-pct danger" id="bpct-threat">0%</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill danger" id="bfill-threat"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-meta">
+          <div class="bar-label">Normal traffic (0.0)</div>
+          <div class="bar-pct safe" id="bpct-normal">0%</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill safe" id="bfill-normal"></div></div>
+      </div>
+    </div>
+
+    <div class="verdict-card safe" id="verdict">
+      <div class="verdict-icon">
+        <svg id="verdict-svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+      </div>
+      <div>
+        <div class="verdict-title" id="verdict-title">Network looks clean</div>
+        <div class="verdict-sub" id="verdict-sub">No significant threat patterns detected.</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-dark" onclick="downloadCSV()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download CSV
+      </button>
+      <button class="btn btn-ghost" onclick="resetPredict()">
+        <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        New prediction
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const BASE = 'http://localhost:1234';
+let resultCSV = null, bestModel = 'model.pkl', trainDone = false;
+const phases = ['train','predict','loading','result'];
+const phaseLabels = {train:'Train',predict:'Predict',loading:'Analyzing',result:'Result'};
+
+function showPhase(id){
+  phases.forEach(p=>{
+    document.getElementById('phase-'+p).classList.toggle('active', p===id);
+  });
+  document.getElementById('nav-phase').textContent = phaseLabels[id]||id;
+}
+
+function setStep(n, state){
+  const step = document.getElementById('ps-'+n);
+  const num  = document.getElementById('pn-'+n);
+  const tag  = document.getElementById('pt-'+n);
+  step.className = 'pipe-step ' + state;
+  if(state==='running'){
+    tag.className='pipe-tag running'; tag.textContent='Running';
+    num.textContent=n;
+  } else if(state==='done'){
+    tag.className='pipe-tag done'; tag.textContent='Done';
+    num.innerHTML='<svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg>';
+  } else {
+    tag.className='pipe-tag idle'; tag.textContent='Idle';
+    num.textContent=n;
+  }
+}
+
+async function startTraining(){
+  const btn = document.getElementById('train-btn');
+  btn.disabled=true;
+  btn.innerHTML='<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;animation:spin .9s linear infinite"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg> Training...';
+  document.getElementById('train-err').style.display='none';
+  document.getElementById('model-card').style.display='none';
+  document.getElementById('continue-btn').style.display='none';
+  for(let i=1;i<=4;i++) setStep(i,'');
+
+  let cur=1;
+  setStep(1,'running');
+  const timer = setInterval(()=>{
+    cur++;
+    if(cur>4){clearInterval(timer);return;}
+    setStep(cur-1,'done');
+    setStep(cur,'running');
+  }, 1800);
+
+  try{
+    const res = await fetch(`${BASE}/train`);
+    clearInterval(timer);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+
+    let data;
+    const ct = res.headers.get('content-type')||'';
+    if(ct.includes('application/json')){
+      data = await res.json();
+      bestModel = data.best_model || 'Best model';
+    } else {
+      await res.text();
+      bestModel = 'Best model';
+    }
+
+    for(let i=1;i<=4;i++) setStep(i,'done');
+    document.getElementById('best-model-name').textContent = bestModel;
+    document.getElementById('model-card').style.display='block';
+    document.getElementById('continue-btn').style.display='inline-flex';
+    trainDone=true;
+  } catch(e){
+    clearInterval(timer);
+    for(let i=1;i<=4;i++) setStep(i,'');
+    const err=document.getElementById('train-err');
+    err.style.display='block';
+    err.textContent='Training failed: '+e.message+'. Make sure API is running on port 1234.';
+  }
+
+  btn.disabled=false;
+  btn.innerHTML='<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><polygon points="5 3 19 12 5 21 5 3"/></svg> '+(trainDone?'Retrain':'Start training');
+}
+
+function onFileChange(inp){
+  const f=inp.files[0]; if(!f) return;
+  const pill=document.getElementById('file-pill');
+  document.getElementById('file-name-txt').textContent=f.name;
+  pill.style.display='inline-flex';
+  document.getElementById('predict-btn').disabled=false;
+}
+
+const dz=document.getElementById('drop-zone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag')});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{
+  e.preventDefault();dz.classList.remove('drag');
+  const f=e.dataTransfer.files[0];
+  if(f&&f.name.endsWith('.csv')){
+    document.getElementById('file-input').files=e.dataTransfer.files;
+    onFileChange({files:[f]});
+  }
+});
+
+async function runPredict(){
+  const file=document.getElementById('file-input').files[0];
+  if(!file) return;
+  showPhase('loading');
+  document.getElementById('predict-err').style.display='none';
+
+  const msgs=['Preprocessing features...','Running model inference...','Aggregating results...','Finalizing predictions...'];
+  let mi=0;
+  const mt=setInterval(()=>{
+    mi=(mi+1)%msgs.length;
+    document.getElementById('loading-sub').textContent=msgs[mi];
+  },1100);
+
+  try{
+    const fd=new FormData(); fd.append('file',file);
+    const res=await fetch(`${BASE}/predict`,{method:'POST',body:fd});
+    clearInterval(mt);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const html=await res.text();
+    parseResult(html);
+    showPhase('result');
+    setTimeout(()=>{
+      document.getElementById('bfill-threat').style.width=(window._tp||0)+'%';
+      document.getElementById('bfill-normal').style.width=(window._np||0)+'%';
+    },100);
+  } catch(e){
+    clearInterval(mt);
+    showPhase('predict');
+    const err=document.getElementById('predict-err');
+    err.style.display='block';
+    err.textContent='Prediction failed: '+e.message;
+  }
+}
+
+function parseResult(html){
+  const doc=new DOMParser().parseFromString(html,'text/html');
+  const tbl=doc.querySelector('table');
+  if(!tbl) return;
+  const cols=[...tbl.querySelectorAll('thead tr th')].map(t=>t.textContent.trim());
+  const rows=[...tbl.querySelectorAll('tbody tr')].map(tr=>[...tr.querySelectorAll('td')].map(td=>td.textContent.trim()));
+  const pi=cols.indexOf('predicted_column');
+  let threats=0;
+  rows.forEach(r=>{if(parseFloat(r[pi])===1.0)threats++;});
+  const total=rows.length, normal=total-threats;
+  const tp=total?Math.round(threats/total*100):0;
+  const np=100-tp;
+  window._tp=tp; window._np=np;
+
+  document.getElementById('r-total').textContent=total;
+  document.getElementById('r-rate').textContent=tp+'%';
+  document.getElementById('bpct-threat').textContent=tp+'%';
+  document.getElementById('bpct-normal').textContent=np+'%';
+  document.getElementById('result-model-tag').textContent=bestModel;
+
+  const vc=document.getElementById('verdict');
+  const vt=document.getElementById('verdict-title');
+  const vs=document.getElementById('verdict-sub');
+  const vsvg=document.getElementById('verdict-svg');
+  if(tp>30){
+    vc.className='verdict-card threat';
+    vt.textContent='Threats detected';
+    vs.textContent=tp+'% of connections flagged as potential threats.';
+    vsvg.innerHTML='<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>';
+  } else {
+    vc.className='verdict-card safe';
+    vt.textContent=tp>0?'Minor anomalies only':'Network looks clean';
+    vs.textContent=tp>0?tp+'% anomalies detected — no significant threat pattern.':'No threat patterns detected in this dataset.';
+    vsvg.innerHTML='<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>';
+  }
+
+  const csvLines=[cols.join(','),...rows.map(r=>r.map(c=>'"'+c+'"').join(','))];
+  resultCSV=new Blob([csvLines.join('\n')],{type:'text/csv'});
+}
+
+function downloadCSV(){
+  if(!resultCSV) return;
+  const url=URL.createObjectURL(resultCSV);
+  const a=document.createElement('a');a.href=url;a.download='netsec_prediction.csv';a.click();
+  URL.revokeObjectURL(url);
+}
+
+function resetPredict(){
+  document.getElementById('file-input').value='';
+  document.getElementById('file-pill').style.display='none';
+  document.getElementById('predict-btn').disabled=true;
+  document.getElementById('bfill-threat').style.width='0%';
+  document.getElementById('bfill-normal').style.width='0%';
+  showPhase('predict');
+}
+</script>
+</body>
+</html>

@@ -24,7 +24,6 @@ if __name__=='__main__':
         dataValidation = DataValidation(dataIngestionartifact,dataValidationConfig)
 
         logging.info("Initiate the data validation.")
-
         
         data_validation_artifact = dataValidation.initiate_data_validation()
         logging.info("data Validation Completed")
@@ -34,9 +33,7 @@ if __name__=='__main__':
         
         Model_TrainerConfig = ModelTrainerConfig(trainingPipelineConfig)
         modelTrainer = ModelTrainer(Model_TrainerConfig, data_transformation_artifact)
-        model_trainer_artifact = modelTrainer.initiate_model_trainer()
-        
-        print(model_trainer_artifact)
+        modelTrainer.initiate_model_trainer()
 
     except Exception as e:
         raise NetworkSecurityException(e,sys)

@@ -1,0 +1,142 @@
+[ 2026-05-14 20:39:43,531 ] 38 root - INFO - Start data Ingestion
+[ 2026-05-14 20:39:59,952 ] 69 root - INFO - Performed train test split on the dataframe
+[ 2026-05-14 20:39:59,952 ] 71 root - INFO - Exited split_data_as_train_test method of Data_Ingestion class
+[ 2026-05-14 20:39:59,952 ] 79 root - INFO - Exporting train and test file path.
+[ 2026-05-14 20:39:59,993 ] 88 root - INFO - Exported train and test file path.
+[ 2026-05-14 20:39:59,993 ] 41 root - INFO - Data Ingestion completed and artifact: DataIngestionArtifact(trained_file_path='Artifacts\\05_14_2026_20_39_33\\data_ingestion\\ingested\\train.csv', test_file_path='Artifacts\\05_14_2026_20_39_33\\data_ingestion\\ingested\\test.csv')
+[ 2026-05-14 20:40:00,006 ] 51 root - INFO - Initiate the data Validation
+[ 2026-05-14 20:40:00,043 ] 33 root - INFO - Required number of columns:31
+[ 2026-05-14 20:40:00,043 ] 34 root - INFO - Data frame has columns:31
+[ 2026-05-14 20:40:00,043 ] 38 root - INFO - Numbers of columns are valid.
+[ 2026-05-14 20:40:00,043 ] 33 root - INFO - Required number of columns:31
+[ 2026-05-14 20:40:00,043 ] 34 root - INFO - Data frame has columns:31
+[ 2026-05-14 20:40:00,043 ] 38 root - INFO - Numbers of columns are valid.
+[ 2026-05-14 20:40:00,143 ] 65 root - INFO - Entered initiate_data_transformation method of DataTransformation class
+[ 2026-05-14 20:40:00,143 ] 67 root - INFO - Starting data transformation
+[ 2026-05-14 20:40:00,157 ] 49 root - INFO - Entered get_data_trnasformer_object method of Trnasformation class
+[ 2026-05-14 20:40:00,158 ] 54 root - INFO - Initialise KNNImputer with {'missing_values': nan, 'n_neighbors': 3, 'weights': 'uniform'}
+[ 2026-05-14 20:40:00,762 ] 81 root - INFO - \U0001f680 Training started: Decision Tree
+[ 2026-05-14 20:40:05,034 ] 104 root - INFO - Decision Tree | Train Score: 0.8552 | Test Score: 0.7911
+[ 2026-05-14 20:40:05,034 ] 81 root - INFO - \U0001f680 Training started: Gradient Boosting
+[ 2026-05-14 20:40:07,734 ] 104 root - INFO - Gradient Boosting | Train Score: 0.9001 | Test Score: 0.8589
+[ 2026-05-14 20:40:07,734 ] 81 root - INFO - \U0001f680 Training started: Logistic Regression
+[ 2026-05-14 20:40:08,249 ] 104 root - INFO - Logistic Regression | Train Score: 0.7113 | Test Score: 0.6976
+[ 2026-05-14 20:40:08,249 ] 81 root - INFO - \U0001f680 Training started: XGBClassifier
+[ 2026-05-14 20:40:09,833 ] 104 root - INFO - XGBClassifier | Train Score: 0.9496 | Test Score: 0.8955
+[ 2026-05-14 20:40:09,833 ] 81 root - INFO - \U0001f680 Training started: CatBoost Classifier
+[ 2026-05-14 20:40:17,583 ] 104 root - INFO - CatBoost Classifier | Train Score: 0.9533 | Test Score: 0.8900
+[ 2026-05-14 20:40:17,583 ] 81 root - INFO - \U0001f680 Training started: AdaBoost Classifier
+[ 2026-05-14 20:40:20,350 ] 104 root - INFO - AdaBoost Classifier | Train Score: 0.7406 | Test Score: 0.7214
+[ 2026-05-14 20:40:20,350 ] 81 root - INFO - \U0001f680 Training started: Random Forest
+[ 2026-05-14 20:40:26,984 ] 104 root - INFO - Random Forest | Train Score: 0.9551 | Test Score: 0.8882
+[ 2026-05-14 20:40:26,984 ] 81 root - INFO - \U0001f680 Training started: KNeighborsClassifier
+[ 2026-05-14 20:40:30,495 ] 104 root - INFO - KNeighborsClassifier | Train Score: 0.9505 | Test Score: 0.8882
+[ 2026-05-14 20:40:30,495 ] 81 root - INFO - \U0001f680 Training started: SVM
+[ 2026-05-14 20:40:49,325 ] 104 root - INFO - SVM | Train Score: 0.9533 | Test Score: 0.8680
+[ 2026-05-14 20:40:53,443 ] 203 root - INFO - Model trainer artifact: ModelTrainerArtifact(trained_model_file_path='Artifacts\\05_14_2026_20_39_33\\model_trainer\\trained_model\\model.pkl', train_metric_artifact=ClassificationMetricArtifact(f1_score=0.9862096937740823, precision_score=0.9852106969205835, recall_score=0.98721071863581), test_metric_artifact=ClassificationMetricArtifact(f1_score=0.974566007266855, precision_score=0.9686998394863563, recall_score=0.9805036555645816))
+[ 2026-05-14 20:46:01,135 ] 38 root - INFO - Start data Ingestion
+[ 2026-05-14 20:46:15,883 ] 69 root - INFO - Performed train test split on the dataframe
+[ 2026-05-14 20:46:15,883 ] 71 root - INFO - Exited split_data_as_train_test method of Data_Ingestion class
+[ 2026-05-14 20:46:15,883 ] 79 root - INFO - Exporting train and test file path.
+[ 2026-05-14 20:46:15,919 ] 88 root - INFO - Exported train and test file path.
+[ 2026-05-14 20:46:15,919 ] 41 root - INFO - Data Ingestion completed and artifact: DataIngestionArtifact(trained_file_path='Artifacts\\05_14_2026_20_39_33\\data_ingestion\\ingested\\train.csv', test_file_path='Artifacts\\05_14_2026_20_39_33\\data_ingestion\\ingested\\test.csv')
+[ 2026-05-14 20:46:15,923 ] 51 root - INFO - Initiate the data Validation
+[ 2026-05-14 20:46:15,959 ] 33 root - INFO - Required number of columns:31
+[ 2026-05-14 20:46:15,959 ] 34 root - INFO - Data frame has columns:31
+[ 2026-05-14 20:46:15,959 ] 38 root - INFO - Numbers of columns are valid.
+[ 2026-05-14 20:46:15,959 ] 33 root - INFO - Required number of columns:31
+[ 2026-05-14 20:46:15,959 ] 34 root - INFO - Data frame has columns:31
+[ 2026-05-14 20:46:15,959 ] 38 root - INFO - Numbers of columns are valid.
+[ 2026-05-14 20:46:16,065 ] 65 root - INFO - Entered initiate_data_transformation method of DataTransformation class
+[ 2026-05-14 20:46:16,065 ] 67 root - INFO - Starting data transformation
+[ 2026-05-14 20:46:16,079 ] 49 root - INFO - Entered get_data_trnasformer_object method of Trnasformation class
+[ 2026-05-14 20:46:16,080 ] 54 root - INFO - Initialise KNNImputer with {'missing_values': nan, 'n_neighbors': 3, 'weights': 'uniform'}
+[ 2026-05-14 20:46:16,103 ] 81 root - INFO - \U0001f680 Training started: Decision Tree
+[ 2026-05-14 20:46:20,487 ] 104 root - INFO - Decision Tree | Train Score: 0.9158 | Test Score: 0.8263
+[ 2026-05-14 20:46:20,487 ] 81 root - INFO - \U0001f680 Training started: Gradient Boosting
+[ 2026-05-14 20:46:25,040 ] 104 root - INFO - Gradient Boosting | Train Score: 0.9479 | Test Score: 0.8854
+[ 2026-05-14 20:46:25,040 ] 81 root - INFO - \U0001f680 Training started: Logistic Regression
+[ 2026-05-14 20:46:25,477 ] 104 root - INFO - Logistic Regression | Train Score: 0.7109 | Test Score: 0.7192
+[ 2026-05-14 20:46:25,477 ] 81 root - INFO - \U0001f680 Training started: XGBClassifier
+[ 2026-05-14 20:46:26,971 ] 104 root - INFO - XGBClassifier | Train Score: 0.9245 | Test Score: 0.8744
+[ 2026-05-14 20:46:26,971 ] 81 root - INFO - \U0001f680 Training started: CatBoost Classifier
+[ 2026-05-14 20:46:34,680 ] 104 root - INFO - CatBoost Classifier | Train Score: 0.9588 | Test Score: 0.8928
+[ 2026-05-14 20:46:34,680 ] 81 root - INFO - \U0001f680 Training started: AdaBoost Classifier
+[ 2026-05-14 20:46:36,765 ] 104 root - INFO - AdaBoost Classifier | Train Score: 0.7328 | Test Score: 0.7210
+[ 2026-05-14 20:46:36,765 ] 81 root - INFO - \U0001f680 Training started: Random Forest
+[ 2026-05-14 20:46:41,017 ] 104 root - INFO - Random Forest | Train Score: 0.9332 | Test Score: 0.8781
+[ 2026-05-14 20:46:41,018 ] 81 root - INFO - \U0001f680 Training started: KNeighborsClassifier
+[ 2026-05-14 20:46:44,685 ] 104 root - INFO - KNeighborsClassifier | Train Score: 0.9108 | Test Score: 0.7931
+[ 2026-05-14 20:46:44,685 ] 81 root - INFO - \U0001f680 Training started: SVM
+[ 2026-05-14 20:47:07,000 ] 104 root - INFO - SVM | Train Score: 0.9364 | Test Score: 0.8670
+[ 2026-05-14 20:47:12,897 ] 203 root - INFO - Model trainer artifact: ModelTrainerArtifact(trained_model_file_path='Artifacts\\05_14_2026_20_39_33\\model_trainer\\trained_model\\model.pkl', train_metric_artifact=ClassificationMetricArtifact(f1_score=0.9873057784096679, precision_score=0.981029263370333, recall_score=0.9936631234668847), test_metric_artifact=ClassificationMetricArtifact(f1_score=0.9753617520531873, precision_score=0.9651702786377709, recall_score=0.9857707509881423))
+[ 2026-05-14 20:47:58,168 ] 38 root - INFO - Start data Ingestion
+[ 2026-05-14 20:48:09,068 ] 69 root - INFO - Performed train test split on the dataframe
+[ 2026-05-14 20:48:09,068 ] 71 root - INFO - Exited split_data_as_train_test method of Data_Ingestion class
+[ 2026-05-14 20:48:09,069 ] 79 root - INFO - Exporting train and test file path.
+[ 2026-05-14 20:48:09,104 ] 88 root - INFO - Exported train and test file path.
+[ 2026-05-14 20:48:09,104 ] 41 root - INFO - Data Ingestion completed and artifact: DataIngestionArtifact(trained_file_path='Artifacts\\05_14_2026_20_39_33\\data_ingestion\\ingested\\train.csv', test_file_path='Artifacts\\05_14_2026_20_39_33\\data_ingestion\\ingested\\test.csv')
+[ 2026-05-14 20:48:09,107 ] 51 root - INFO - Initiate the data Validation
+[ 2026-05-14 20:48:09,140 ] 33 root - INFO - Required number of columns:31
+[ 2026-05-14 20:48:09,140 ] 34 root - INFO - Data frame has columns:31
+[ 2026-05-14 20:48:09,140 ] 38 root - INFO - Numbers of columns are valid.
+[ 2026-05-14 20:48:09,140 ] 33 root - INFO - Required number of columns:31
+[ 2026-05-14 20:48:09,140 ] 34 root - INFO - Data frame has columns:31
+[ 2026-05-14 20:48:09,140 ] 38 root - INFO - Numbers of columns are valid.
+[ 2026-05-14 20:48:09,254 ] 65 root - INFO - Entered initiate_data_transformation method of DataTransformation class
+[ 2026-05-14 20:48:09,254 ] 67 root - INFO - Starting data transformation
+[ 2026-05-14 20:48:09,268 ] 49 root - INFO - Entered get_data_trnasformer_object method of Trnasformation class
+[ 2026-05-14 20:48:09,268 ] 54 root - INFO - Initialise KNNImputer with {'missing_values': nan, 'n_neighbors': 3, 'weights': 'uniform'}
+[ 2026-05-14 20:48:09,290 ] 81 root - INFO - \U0001f680 Training started: Decision Tree
+[ 2026-05-14 20:48:09,477 ] 104 root - INFO - Decision Tree | Train Score: 0.8996 | Test Score: 0.7970
+[ 2026-05-14 20:48:09,477 ] 81 root - INFO - \U0001f680 Training started: Gradient Boosting
+[ 2026-05-14 20:48:16,284 ] 104 root - INFO - Gradient Boosting | Train Score: 0.9487 | Test Score: 0.8610
+[ 2026-05-14 20:48:16,285 ] 81 root - INFO - \U0001f680 Training started: Logistic Regression
+[ 2026-05-14 20:48:17,229 ] 104 root - INFO - Logistic Regression | Train Score: 0.7222 | Test Score: 0.6836
+[ 2026-05-14 20:48:17,229 ] 81 root - INFO - \U0001f680 Training started: XGBClassifier
+[ 2026-05-14 20:48:17,970 ] 104 root - INFO - XGBClassifier | Train Score: 0.9473 | Test Score: 0.8500
+[ 2026-05-14 20:48:17,970 ] 81 root - INFO - \U0001f680 Training started: CatBoost Classifier
+[ 2026-05-14 20:48:25,724 ] 104 root - INFO - CatBoost Classifier | Train Score: 0.9542 | Test Score: 0.8683
+[ 2026-05-14 20:48:25,724 ] 81 root - INFO - \U0001f680 Training started: AdaBoost Classifier
+[ 2026-05-14 20:48:27,612 ] 104 root - INFO - AdaBoost Classifier | Train Score: 0.7345 | Test Score: 0.7147
+[ 2026-05-14 20:48:27,612 ] 81 root - INFO - \U0001f680 Training started: Random Forest
+[ 2026-05-14 20:48:36,090 ] 104 root - INFO - Random Forest | Train Score: 0.9610 | Test Score: 0.8665
+[ 2026-05-14 20:48:36,090 ] 81 root - INFO - \U0001f680 Training started: KNeighborsClassifier
+[ 2026-05-14 20:48:40,560 ] 104 root - INFO - KNeighborsClassifier | Train Score: 0.9615 | Test Score: 0.8226
+[ 2026-05-14 20:48:40,560 ] 81 root - INFO - \U0001f680 Training started: SVM
+[ 2026-05-14 20:50:42,819 ] 1871 asyncio - ERROR - Exception in callback _ProactorReadPipeTransport._loop_reading()
+handle: <Handle _ProactorReadPipeTransport._loop_reading()>
+Traceback (most recent call last):
+  File "C:\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\proactor_events.py", line 325, in _loop_reading
+    self._data_received(data, length)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\proactor_events.py", line 274, in _data_received
+    self._protocol.data_received(data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Rezon\AppData\Roaming\Python\Python313\site-packages\uvicorn\protocols\http\h11_impl.py", line 175, in data_received
+    self.handle_events()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Rezon\AppData\Roaming\Python\Python313\site-packages\uvicorn\protocols\http\h11_impl.py", line 184, in handle_events
+    self.send_400_response(msg)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Rezon\AppData\Roaming\Python\Python313\site-packages\uvicorn\protocols\http\h11_impl.py", line 307, in send_400_response
+    output = self.conn.send(event)
+  File "C:\Users\Rezon\AppData\Roaming\Python\Python313\site-packages\h11\_connection.py", line 538, in send
+    data_list = self.send_with_data_passthrough(event)
+  File "C:\Users\Rezon\AppData\Roaming\Python\Python313\site-packages\h11\_connection.py", line 563, in send_with_data_passthrough
+    self._process_event(self.our_role, event)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rezon\AppData\Roaming\Python\Python313\site-packages\h11\_connection.py", line 284, in _process_event
+    self._cstate.process_event(role, type(event), server_switch_event)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rezon\AppData\Roaming\Python\Python313\site-packages\h11\_state.py", line 291, in process_event
+    self._fire_event_triggered_transitions(role, _event_type)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rezon\AppData\Roaming\Python\Python313\site-packages\h11\_state.py", line 309, in _fire_event_triggered_transitions
+    raise LocalProtocolError(
+    ...<3 lines>...
+    ) from None
+h11._util.LocalProtocolError: can't handle event type Response when role=SERVER and state=CLOSED
