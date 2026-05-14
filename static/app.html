@@ -318,7 +318,9 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 </div>
 
 <script>
-const BASE = 'http://localhost:1234';
+  
+const BASE = window.location.origin;
+
 let resultCSV = null, bestModel = 'model.pkl', trainDone = false;
 const phases = ['train','predict','loading','result'];
 const phaseLabels = {train:'Train',predict:'Predict',loading:'Analyzing',result:'Result'};
