@@ -1,3 +1,4 @@
+import os
 import sys
 import certifi
 import traceback
@@ -81,6 +82,8 @@ async def predict_route(request: Request,file: UploadFile = File(...)):
         df['predicted_column'] = y_pred
         print(df['predicted_column'])
         
+
+        os.makedirs('prediction_output', exist_ok=True)
         df.to_csv('prediction_output/output.csv')
 
         table_html = df.to_html(classes='table table-striped')
@@ -92,14 +95,6 @@ async def predict_route(request: Request,file: UploadFile = File(...)):
         return Response(traceback.format_exc(), status_code=500)
     
 
-
-
-@app.get("/docs", tags=["authentication"])
-async def index():
-    return RedirectResponse(url="/docs")
-
-
-    
 if __name__=="__main__":
     app_run(app,host="0.0.0.0", port=5000)   # for render. don't work on my pc. 
     # app_run(app,host="127.0.0.1" , port=5000)  # for localhost.
