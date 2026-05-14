@@ -11,4 +11,4 @@ fastapi
 uvicorn
 python-multipart
 lightgbm
-# -e .
+gunicorn
