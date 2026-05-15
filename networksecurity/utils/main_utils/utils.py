@@ -75,25 +75,30 @@ def load_object(file_path: str) -> object:
 def evaluate_models(X_train, y_train, X_test, y_test, models, param):
     try:
         report = {}
+        
+        # Render এ RENDER environment variable automatically থাকে
+        is_render = os.environ.get("RENDER") is not None
 
         for name, model in models.items():
-
             logging.info(f"🚀 Training started: {name}")
-
             para = param[name]
 
-            gs = RandomizedSearchCV(
-                estimator=model,
-                param_distributions=para,               
-                cv=3,
-                verbose=1,    
-                n_iter = 10,            
-                n_jobs=-1
-                )               
-
-            gs.fit(X_train, y_train)
-
-            best_model = gs.best_estimator_
+            if is_render:
+                # Render: fast training, no tuning
+                model.fit(X_train, y_train)
+                best_model = model
+            else:
+                # Localhost: full hyperparameter tuning
+                gs = RandomizedSearchCV(
+                    estimator=model,
+                    param_distributions=para,
+                    cv=3,
+                    verbose=1,
+                    n_iter=10,
+                    n_jobs=-1
+                )
+                gs.fit(X_train, y_train)
+                best_model = gs.best_estimator_
 
             y_train_pred = best_model.predict(X_train)
             y_test_pred = best_model.predict(X_test)
@@ -101,10 +106,7 @@ def evaluate_models(X_train, y_train, X_test, y_test, models, param):
             train_score = r2_score(y_train, y_train_pred)
             test_score = r2_score(y_test, y_test_pred)
 
-            logging.info(
-                f"{name} | Train Score: {train_score:.4f} | Test Score: {test_score:.4f}"
-            )
-
+            logging.info(f"{name} | Train: {train_score:.4f} | Test: {test_score:.4f}")
             report[name] = test_score
 
         return report
