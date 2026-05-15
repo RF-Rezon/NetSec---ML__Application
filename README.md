@@ -1,3 +1,7 @@
+<img width="159" height="54" alt="image" src="https://github.com/user-attachments/assets/b4614b84-94ba-4bee-9785-8a7f4f437eae" />
+
+<br>
+
 # NetSec — AI Network Threat Detection
 
 An end-to-end machine learning system that classifies network traffic as **normal (0)** or **threat (1)** using a full automated pipeline — from raw data ingestion to real-time prediction.
