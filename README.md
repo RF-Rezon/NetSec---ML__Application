@@ -105,6 +105,18 @@ http://127.0.0.1:5000
 
 > Render's free tier spins down after inactivity. The first request may take 30–60 seconds to respond.
 
+---
+
+## Screenshots
+
+<img width="2559" height="1354" alt="image" src="https://github.com/user-attachments/assets/87f3e218-e2a3-4d4c-8d71-f7ef5786c898" />
+<br>
+<img width="2559" height="1354" alt="image" src="https://github.com/user-attachments/assets/9418c830-ec3a-4883-9d43-44d77ce73cdc" />
+<br>
+<img width="2559" height="1354" alt="image" src="https://github.com/user-attachments/assets/cb4cee2e-eec8-41d2-bf60-7fd553d448fd" />
+
+---
+
 ## License
 
 MIT
